@@ -1,6 +1,6 @@
 # NINEBOX
 
-Hello, nice to see that you have interesse in this project. Before we get start it's very important for you to know the concepts behind the system we are going to create and how we'll implement it.
+Hello, nice to see that you have interest in this project. Before we get start it's very important for you to know the concepts behind the system we are going to create and how we'll implement it.
 
 ## Some concepts to know before we get started to code
 

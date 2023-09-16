@@ -1,3 +1,25 @@
+const plugin = require('tailwindcss/plugin');
+
+const iOsHeight = plugin(function ({ addUtilities }) {
+  const supportsTouchRule = '@supports (-webkit-touch-callout: none)';
+  const webkitFillAvailable = '-webkit-fill-available';
+
+  const utilities = {
+    '.min-h-screen-ios': {
+      [supportsTouchRule]: {
+        minHeight: webkitFillAvailable,
+      },
+    },
+    '.h-screen-ios': {
+      [supportsTouchRule]: {
+        height: webkitFillAvailable,
+      },
+    },
+  };
+
+  addUtilities(utilities, ['responsive']);
+});
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
@@ -72,5 +94,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"), iOsHeight],
 }

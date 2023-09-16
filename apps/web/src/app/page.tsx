@@ -1,5 +1,15 @@
-import { Button } from '@/components/ui/button'
+import Image from 'next/image'
 
 export default function Home() {
-  return <Button>Click me</Button>
+  return (
+    <>
+      <Image
+        width={500}
+        height={500}
+        src="/static/bg.png"
+        alt={''}
+        style={{ position: 'absolute' }}
+      />
+    </>
+  )
 }
