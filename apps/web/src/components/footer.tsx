@@ -1,23 +1,22 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 
 export function Footer() {
   return (
-    <footer className="flex h-[80px] items-center justify-center text-center">
+    <footer className="flex h-20 items-center justify-center text-center">
       <p className="inline-flex items-center gap-2">
-        Created by{' '}
+        Desenvolvido por{' '}
         <Link
           target="_blank"
-          href="https://twitter.com/bukinoshita"
+          rel="noopener"
+          href="https://www.linkedin.com/in/eduassuncao"
           className="inline-flex items-center gap-2"
         >
-          <Image
-            className="border-slate-7 inline-block rounded-full border"
-            src="/static/eduardo.png"
-            alt="Imagem de perfil do Eduardo Assunção, criador do sistema"
-            width="20"
-            height="20"
-          />
+          <Avatar className="w-5 h-5">
+            <AvatarImage src="https://github.com/cunhaedu.png" alt="Eduardo Assunção" />
+            <AvatarFallback>EA</AvatarFallback>
+          </Avatar>
           Eduardo Assunção
         </Link>
       </p>

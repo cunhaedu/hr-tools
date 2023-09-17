@@ -14,20 +14,20 @@ export default function Home() {
 
         <div className="relative mx-auto flex max-w-3xl flex-col justify-center">
           <div className="max-w-[725px] text-center">
-            <h1 className="font-bold md:text-[70px] md:leading-[85px] tracking-[-1.024px;] text-[38px] leading-[46px] before:bg-shine relative mb-8 !text-white/80 before:absolute before:left-0 before:top-0 before:w-full before:animate-[shine_2s_ease-in-out] before:bg-[length:200%] before:bg-clip-text before:text-transparent before:content-['The_next_generation_of_writing_emails'] ">
+            <h1 className="font-bold md:text-[70px] md:leading-[85px] tracking-[-1.024px;] text-5xl relative mb-8 !text-white/80">
               The next generation of writing emails
             </h1>
 
             <div className="sm:px-20">
-              <p className="text-17px md:text-xl tracking-[-0.16px] text-slate-11">
-                A collection of high-quality, unstyled components for creating
-                beautiful emails using React and TypeScript.
+              <p className="text-base md:text-xl tracking-[-0.16px] text-muted-foreground">
+                Crie estratégias para valorização, retenção e desenvolvimento
+                dos seus colaboradores a partir da matriz 9Box
               </p>
             </div>
           </div>
 
           <div className="mt-10 flex items-center justify-center gap-4">
-            <Button size="lg">
+            <Button size="lg" asChild>
               <Link href="/login" className='flex justify-center items-center'>
                 Login
                 <ArrowRight className="w-4 h-4 ml-2" />
