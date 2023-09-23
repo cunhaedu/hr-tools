@@ -2,7 +2,7 @@ import Link from 'next/link';
 import clsx from 'clsx';
 
 import { Separator } from './ui/separator';
-import { GithubIcon } from 'lucide-react'
+import { ThemeToggle } from './theme-toggle';
 
 interface MenuProps extends React.ComponentPropsWithoutRef<'nav'> {}
 
@@ -43,9 +43,7 @@ export function Menu({ className, ...props }: MenuProps) {
       <Separator orientation="vertical" className="h-6" />
 
       <ul className="flex gap-2">
-        <MenuItem className="w-full px-2" href="/about">
-          <GithubIcon className="w-5 h-5" />
-        </MenuItem>
+        <ThemeToggle />
       </ul>
     </nav>
   )
