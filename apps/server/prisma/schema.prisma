@@ -8,22 +8,24 @@ datasource db {
 }
 
 model Company {
-  id           String   @id @default(uuid())
-  name         String
-  cnpj         String   @unique
-  email        String   @unique
-  cep          String
-  streetNumber String   @map("street_number")
-  street       String
-  neighborhood String
-  city         String
-  state        String
-  phoneNumber  String   @map("phone_number")
-  createdAt    DateTime @default(now())
+  id               String   @id @default(uuid())
+  name             String
+  cnpj             String   @unique
+  email            String   @unique
+  cep              String
+  streetNumber     String   @map("street_number")
+  street           String
+  neighborhood     String
+  city             String
+  state            String
+  phoneNumber      String   @map("phone_number")
+  isVerified       Boolean  @default(false) @map("is_verified")
+  verificationCode String   @map("verification_code")
+  createdAt        DateTime @default(now())
 
-  users                   User[]
-  Position                Position[]
-  OrganizationalStructure OrganizationalStructure[]
+  users                    User[]
+  positions                Position[]
+  organizationalStructures OrganizationalStructure[]
 
   @@map("company")
 }
@@ -57,19 +59,19 @@ model Position {
 model User {
   id                        String  @id @default(uuid())
   firstName                 String  @map("first_name")
-  secondName                String  @map("second_name")
+  lastName                  String  @map("last_name")
   email                     String  @unique
   password                  String?
-  isActive                  Boolean @default(true)
-  companyId                 String  @map("company_id")
-  positionId                String? @map("position_id")
+  isActive                  Boolean @default(true) @map("is_active")
   organizationalStructureId String? @map("organizational_structure_id")
-  isCompanyResponsible      Boolean @default(false) @map("is_company_responsible")
+  positionId                String? @map("position_id")
+  companyId                 String  @map("company_id")
+  roleId                    String  @map("role_id")
 
+  role                    Role                     @relation(fields: [roleId], references: [id])
   company                 Company                  @relation(fields: [companyId], references: [id])
   position                Position?                @relation(fields: [positionId], references: [id])
   organizationalStructure OrganizationalStructure? @relation(fields: [organizationalStructureId], references: [id])
-  roles                   Role[]                   @relation("user_role")
 
   @@map("user")
 }
@@ -78,8 +80,8 @@ model Role {
   id   String @id @default(uuid())
   name String
 
-  users       User[]       @relation("user_role")
   permissions Permission[] @relation("role_permission")
+  users       User[]
 
   @@map("rbac_role")
 }
