@@ -19,8 +19,6 @@ export class PrismaCompanyRepository implements CompanyRepository {
   }
 
   findByEmailOrCnpj(email: string, cnpj: string): Promise<Company | null> {
-    console.log('hello');
-
     return this.prisma.company.findUnique({
       where: {
         email,

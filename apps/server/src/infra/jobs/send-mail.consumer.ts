@@ -21,7 +21,6 @@ export class SendMailConsumer {
       },
       subject: job.data.subject,
       html: job.data.html,
-      text: job.data.text,
     });
   }
 }

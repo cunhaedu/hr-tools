@@ -2,6 +2,7 @@ import { CompanyRepository } from '@core/domain/repositories/company.repository'
 import { MailProvider } from '@core/domain/providers/MailProvider';
 
 import { CompanyAlreadyRegistered } from '../../errors/company-already-registered';
+import { TokenProvider } from '@core/domain/providers/TokenProvider';
 
 type Input = {
   name: string;
@@ -20,10 +21,13 @@ type Input = {
   };
 };
 
+const VERIFICATION_CODE_EXPIRATION = '1d';
+
 export class RegisterCompany {
   constructor(
     private companyRepository: CompanyRepository,
     private mailService: MailProvider,
+    private tokenProvider: TokenProvider,
   ) {}
 
   async execute(input: Input): Promise<void> {
@@ -36,16 +40,36 @@ export class RegisterCompany {
       throw new CompanyAlreadyRegistered();
     }
 
-    // generate verification code
-    // send email
+    const verificationCode = await this.generateVerificationCode(input.email);
+    await this.sendEmailWithVerificationLink(input, verificationCode);
+
+    // await this.companyRepository.createWithAdministrator({
+    //   ...input,
+    //   verificationCode,
+    // });
+  }
+
+  private generateVerificationCode(email: string): Promise<string> {
+    return this.tokenProvider.sign({ email }, process.env.JWT_SECRET, {
+      expiresIn: VERIFICATION_CODE_EXPIRATION,
+    });
+  }
+
+  private async sendEmailWithVerificationLink(
+    input: Input,
+    verificationCode: string,
+  ): Promise<void> {
+    const verificationUrl = `${process.env.CLIENT_BASE_URL}/company/verification/${verificationCode}`;
+
+    const html = await this.mailService.retrieveParsedEmailHtmlBasedOnTemplate(
+      'verification',
+      { verificationUrl, userName: input.responsible.firstName },
+    );
 
     await this.mailService.sendMail({
       recipients: [{ name: input.responsible.firstName, email: input.email }],
       subject: 'Verificação de cadastro',
-      html: '<h1>Verifique seu cadastro</h1>',
-      text: 'Verifique seu cadastro',
+      html,
     });
-
-    // await this.companyRepository.createWithAdministrator(input);
   }
 }
