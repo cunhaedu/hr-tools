@@ -1,4 +1,4 @@
-const statesList = [
+export const statesList = [
   { sigla: 'RO', nome: 'Rondônia' },
   { sigla: 'AC', nome: 'Acre' },
   { sigla: 'AM', nome: 'Amazonas' },
