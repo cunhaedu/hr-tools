@@ -18,6 +18,7 @@ import {
   SelectValue
 } from '@/components/ui/select';
 import { SelectCity } from '../components/select-city';
+import { InputMask } from '@/components/ui/input-mask';
 
 export function RegisterCompanyFormeStep2() {
   const { control, watch, setValue } = useFormContext<registerCompanySchemaType>();
@@ -41,7 +42,7 @@ export function RegisterCompanyFormeStep2() {
               <Select onValueChange={onSelectedUFChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue className='min-w-full' placeholder="Selecione uma UF" />
+                    <SelectValue className='min-w-full' placeholder="Selecionar..." />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
@@ -72,7 +73,7 @@ export function RegisterCompanyFormeStep2() {
             <FormItem className='flex-1'>
               <FormLabel>CEP</FormLabel>
               <FormControl>
-                <Input placeholder="Digite o cep da empresa" {...field} />
+                <InputMask mask="99999-999" placeholder="Digite o cep da empresa" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -87,7 +88,7 @@ export function RegisterCompanyFormeStep2() {
             <FormItem className='flex-1'>
               <FormLabel>Número</FormLabel>
               <FormControl>
-                <Input placeholder="Digite o número da empresa" {...field} />
+                <Input type='number' placeholder="Digite o número da rua" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

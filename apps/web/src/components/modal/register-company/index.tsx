@@ -31,7 +31,7 @@ export function RegisterCompany() {
 
   function renderForm() {
     const forms = {
-      registerCompany: <RegisterCompanyForm handleFormChange={handleFormChange} />,
+      registerCompany: <RegisterCompanyForm handleFormChange={handleFormChange} setOpen={setOpen} />,
       forgotPassword: <ForgotPasswordForm handleFormChange={handleFormChange} />,
       signIn: <SignInForm handleFormChange={handleFormChange} />,
     }

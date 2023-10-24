@@ -1,5 +1,3 @@
-"use-client"
-
 import { useFormContext } from 'react-hook-form';
 
 import { registerCompanySchemaType } from '@/schemas/register-company.schema';
@@ -11,6 +9,7 @@ import {
   FormLabel,
   FormMessage
 } from '@/components/ui/form';
+import { InputMask } from '@/components/ui/input-mask';
 
 export function RegisterCompanyFormeStep1() {
   const { control } = useFormContext<registerCompanySchemaType>();
@@ -40,7 +39,11 @@ export function RegisterCompanyFormeStep1() {
           <FormItem>
             <FormLabel>CNPJ</FormLabel>
             <FormControl>
-              <Input placeholder="Digite o CNPJ da empresa" {...field} />
+              <InputMask
+                mask="99.999.999/9999-99"
+                placeholder="Digite o CNPJ da empresa"
+                {...field}
+              />
             </FormControl>
             <FormMessage />
           </FormItem>

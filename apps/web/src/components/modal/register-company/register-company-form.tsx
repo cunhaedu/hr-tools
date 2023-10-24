@@ -1,6 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ReactNode, useState } from 'react';
+import { RotateCwIcon } from 'lucide-react';
 import { useForm } from 'react-hook-form';
+import axios from 'axios';
 
 import { registerCompanySchema, registerCompanySchemaType } from '@/schemas/register-company.schema';
 import { Separator } from '@/components/ui/separator';
@@ -17,6 +19,7 @@ import {
 import { RegisterCompanyFormeStep1 } from './steps/register-company-form-step-1';
 import { RegisterCompanyFormeStep2 } from './steps/register-company-form-step-2';
 import { RegisterCompanyFormeStep3 } from './steps/register-company-form-step-3';
+import { CompanyRegistered } from './components/company-registered';
 
 export const registerCompanyValidationPerStep:
   Record<number, (keyof registerCompanySchemaType)[]> = {
@@ -25,13 +28,15 @@ export const registerCompanyValidationPerStep:
     2: ['email', 'responsibleFirstName', 'responsibleLastName', 'phoneNumber'],
   };
 
+const FORM_STEP_TITLES = ['Dados da empresa', 'endereço', 'Dados do responsável'];
 const FORM_STEP_LENGTH = 2;
 
 interface RegisterCompanyFormProps {
   handleFormChange(form: 'signIn' | 'forgotPassword' | 'registerCompany'): void;
+  setOpen(open: boolean): void;
 }
 
-export function RegisterCompanyForm({ handleFormChange }: RegisterCompanyFormProps) {
+export function RegisterCompanyForm({ handleFormChange, setOpen }: RegisterCompanyFormProps) {
   const [currentFormStep, setCurrentFormStep] = useState<number>(0);
 
   const form = useForm<registerCompanySchemaType>({
@@ -41,7 +46,8 @@ export function RegisterCompanyForm({ handleFormChange }: RegisterCompanyFormPro
   const isInFirstStep = currentFormStep === 0;
   const isInLastStep = currentFormStep === FORM_STEP_LENGTH;
 
-  function onSubmit(values: registerCompanySchemaType) {
+  async function onSubmit(values: registerCompanySchemaType) {
+    await axios('https://servicodados.ibge.gov.br/api/v1/localidades/estados/SP/distritos')
     console.log(values);
   }
 
@@ -53,7 +59,7 @@ export function RegisterCompanyForm({ handleFormChange }: RegisterCompanyFormPro
     if (!isAllFieldsValid) return;
 
     if (isInLastStep) {
-      form.handleSubmit(onSubmit);
+      form.handleSubmit(onSubmit)();
     } else {
       setCurrentFormStep((currentStep) => currentStep + 1);
     }
@@ -73,10 +79,16 @@ export function RegisterCompanyForm({ handleFormChange }: RegisterCompanyFormPro
     return forms[currentFormStep];
   }
 
+  if(form.formState.isSubmitSuccessful) {
+    return (
+      <CompanyRegistered setOpen={setOpen} />
+    )
+  }
+
   return (
     <>
       <DialogHeader>
-        <Stepper length={FORM_STEP_LENGTH} currentStep={currentFormStep} />
+        <Stepper stepTitles={FORM_STEP_TITLES} currentStep={currentFormStep} />
 
         <DialogTitle>Abra uma conta para a sua empresa</DialogTitle>
         <DialogDescription>
@@ -113,14 +125,27 @@ export function RegisterCompanyForm({ handleFormChange }: RegisterCompanyFormPro
               </Button>
             )}
 
-            <Button
-              size="lg"
-              type="button"
-              className="flex-1"
-              onClick={handleActionButton}
-            >
-              {currentFormStep === FORM_STEP_LENGTH ? 'Registrar Empresa' : 'Avançar'}
-            </Button>
+            {form.formState.isSubmitting ? (
+              <Button
+                size="lg"
+                type="button"
+                className="flex-1"
+                disabled
+              >
+                <RotateCwIcon className="mr-2 h-4 w-4 animate-spin" />
+                Please wait
+              </Button>
+            ) : (
+              <Button
+                size="lg"
+                type="button"
+                className="flex-1"
+                onClick={handleActionButton}
+              >
+                {currentFormStep === FORM_STEP_LENGTH ? 'Registrar Empresa' : 'Avançar'}
+              </Button>
+            )}
+
           </div>
         </form>
       </Form>

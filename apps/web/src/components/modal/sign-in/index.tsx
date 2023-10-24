@@ -34,7 +34,7 @@ export function SignIn() {
     const forms = {
       signIn: <SignInForm handleFormChange={handleFormChange} />,
       forgotPassword: <ForgotPasswordForm handleFormChange={handleFormChange} />,
-      registerCompany: <RegisterCompanyForm handleFormChange={handleFormChange} />,
+      registerCompany: <RegisterCompanyForm handleFormChange={handleFormChange} setOpen={setOpen} />,
     }
 
     return forms[currentForm];

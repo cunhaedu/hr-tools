@@ -1,34 +1,32 @@
 "use client"
 
 import { useFormContext } from 'react-hook-form';
-import { z } from 'zod';
 
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { registerCompanySchema } from '@/schemas/register-company.schema';
-import { useQuery } from 'react-query';
+import { registerCompanySchemaType } from '@/schemas/register-company.schema';
+import { useFetchCitiesByUF } from '@/queries/cities';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select';
+import {
+  FormControl,
+  FormMessage,
+  FormField,
+  FormLabel,
+  FormItem,
+} from '@/components/ui/form';
 
 interface SelectCityProps {
   uf?: string;
 }
 
-type ibgeCitiesByUF = {
-  id: number;
-  nome: string;
-}
-
 export function SelectCity({ uf }: SelectCityProps) {
-  console.log(uf);
+  const { control } = useFormContext<registerCompanySchemaType>();
 
-  const { control } = useFormContext<z.infer<typeof registerCompanySchema>>();
-
-  const { data, isLoading } = useQuery<ibgeCitiesByUF[]>({
-    queryKey:['cities', uf],
-    enabled: !!uf,
-    queryFn: () =>
-      fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/distritos`)
-        .then(res => res.json())
-  });
+  const { data, isLoading } = useFetchCitiesByUF(uf);
 
   return (
     <FormField
@@ -40,12 +38,12 @@ export function SelectCity({ uf }: SelectCityProps) {
           <Select onValueChange={field.onChange} defaultValue={field.value}>
             <FormControl>
               <SelectTrigger>
-                <SelectValue placeholder="Selecione a cidade de destino" />
+                <SelectValue placeholder="Selecionar..." />
               </SelectTrigger>
             </FormControl>
             <SelectContent>
-              { !isLoading && data && data.map((city) => (
-                <SelectItem value={city.nome} key={city.id}>
+              {!isLoading && data && data.map((city) => (
+                <SelectItem key={city.id} value={city.nome.toString()}>
                   {city.nome}
                 </SelectItem>
               ))}
