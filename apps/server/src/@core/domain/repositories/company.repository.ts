@@ -18,11 +18,27 @@ export interface CreateCompanyData {
   };
 }
 
+export interface VerifyCompanyAndActivateUserData {
+  companyId: string;
+  responsible: {
+    email: string;
+    hashedPassword: string;
+  };
+}
+
 export abstract class CompanyRepository {
   abstract createWithAdministrator(data: CreateCompanyData): Promise<void>;
+
   abstract findById(id: string): Promise<Company | null>;
+
+  abstract findByVerificationCode(token: string): Promise<Company | null>;
+
   abstract findByEmailOrCnpj(
     email: string,
     cnpj: string,
   ): Promise<Company | null>;
+
+  abstract verifyCompanyAndActivateUser(
+    data: VerifyCompanyAndActivateUserData,
+  ): Promise<void>;
 }

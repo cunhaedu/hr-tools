@@ -9,7 +9,5 @@ export class RegisterCompanyController {
   @Post()
   async create(@Body() body: CreateCompanyDto) {
     await this.registerCompany.execute(body);
-
-    console.log(body);
   }
 }

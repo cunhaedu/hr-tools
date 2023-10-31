@@ -6,6 +6,8 @@ import { Queue } from 'bull';
 import {
   MailProvider,
   MailTemplate,
+  MailTemplateData,
+  MailTemplateName,
   SendEmailData,
 } from '@core/domain/providers/MailProvider';
 
@@ -20,14 +22,20 @@ export class SendMailProducer implements MailProvider {
     this.queue.add('send-mail-job', data);
   }
 
-  async retrieveParsedEmailHtmlBasedOnTemplate(
-    template: MailTemplate,
-    data: any,
+  async retrieveParsedEmailHtmlBasedOnTemplate<T extends MailTemplate>(
+    template: T,
+    data: MailTemplateData[T],
   ): Promise<string> {
-    const templates = {
-      welcome: import('./templates/verification').then((m) => m.default),
-      resetPassword: import('./templates/verification').then((m) => m.default),
-      verification: import('./templates/verification').then((m) => m.default),
+    const templates: Record<MailTemplateName, Promise<any>> = {
+      welcome: import('./templates/account-verification').then(
+        (m) => m.default,
+      ),
+      'reset-password': import('./templates/account-verification').then(
+        (m) => m.default,
+      ),
+      'account-verification': import('./templates/account-verification').then(
+        (m) => m.default,
+      ),
     };
 
     const selectedTemplate = await templates[template];

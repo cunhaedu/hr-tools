@@ -1,4 +1,5 @@
 import { randomUUID } from 'node:crypto';
+import { User } from './User';
 
 type CompanyProps = {
   name: string;
@@ -11,6 +12,8 @@ type CompanyProps = {
   city: string;
   state: string;
   phoneNumber: string;
+  isVerified: boolean;
+  users: User[];
 };
 
 export class Company {
@@ -25,6 +28,8 @@ export class Company {
   city: string;
   state: string;
   phoneNumber: string;
+  isVerified: boolean;
+  users?: User[];
 
   constructor(props: CompanyProps, id?: string) {
     this.cep = props.cep;
@@ -37,6 +42,8 @@ export class Company {
     this.neighborhood = props.neighborhood;
     this.streetNumber = props.streetNumber;
     this.phoneNumber = props.phoneNumber;
+    this.isVerified = props.isVerified;
+    this.users = props.users;
 
     if (!id) {
       this.id = randomUUID();

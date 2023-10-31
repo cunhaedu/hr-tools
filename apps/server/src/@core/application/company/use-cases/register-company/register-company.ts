@@ -1,8 +1,9 @@
 import { CompanyRepository } from '@core/domain/repositories/company.repository';
 import { MailProvider } from '@core/domain/providers/MailProvider';
 
-import { CompanyAlreadyRegistered } from '../../errors/company-already-registered';
 import { TokenProvider } from '@core/domain/providers/TokenProvider';
+
+import { CompanyAlreadyRegistered } from '../../errors';
 
 type Input = {
   name: string;
@@ -41,12 +42,13 @@ export class RegisterCompany {
     }
 
     const verificationCode = await this.generateVerificationCode(input.email);
-    await this.sendEmailWithVerificationLink(input, verificationCode);
 
-    // await this.companyRepository.createWithAdministrator({
-    //   ...input,
-    //   verificationCode,
-    // });
+    await this.companyRepository.createWithAdministrator({
+      ...input,
+      verificationCode,
+    });
+
+    await this.sendEmailWithVerificationLink(input, verificationCode);
   }
 
   private generateVerificationCode(email: string): Promise<string> {
@@ -59,10 +61,10 @@ export class RegisterCompany {
     input: Input,
     verificationCode: string,
   ): Promise<void> {
-    const verificationUrl = `${process.env.CLIENT_BASE_URL}/company/verification/${verificationCode}`;
+    const verificationUrl = `${process.env.CLIENT_BASE_URL}/account-verification/${verificationCode}`;
 
     const html = await this.mailService.retrieveParsedEmailHtmlBasedOnTemplate(
-      'verification',
+      'account-verification',
       { verificationUrl, userName: input.responsible.firstName },
     );
 

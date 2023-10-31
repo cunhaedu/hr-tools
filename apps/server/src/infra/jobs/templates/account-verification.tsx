@@ -10,15 +10,14 @@ import { Text } from '@react-email/text';
 import { Img } from '@react-email/img';
 import * as React from 'react';
 
-type VerificationEmailData = {
-  verificationUrl: string;
-  userName: string;
-};
+import { MailTemplateData } from '@core/domain/providers/MailProvider';
+
+type VerificationEmailTemplateProps = MailTemplateData['account-verification'];
 
 export default function VerificationEmailTemplate({
   verificationUrl,
   userName,
-}: VerificationEmailData) {
+}: VerificationEmailTemplateProps) {
   const currentYear = new Date().getFullYear();
 
   return (

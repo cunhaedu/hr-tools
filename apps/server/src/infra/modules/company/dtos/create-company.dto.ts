@@ -5,7 +5,6 @@ import {
   IsEmail,
   IsObject,
   IsString,
-  IsNumber,
   IsDefined,
   IsNotEmpty,
   IsMobilePhone,
@@ -49,7 +48,7 @@ export class CreateCompanyDto {
   @IsNotEmpty()
   street: string;
 
-  @IsNumber()
+  @IsString()
   @IsNotEmpty()
   streetNumber: string;
 

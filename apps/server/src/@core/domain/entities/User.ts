@@ -1,7 +1,9 @@
+import { randomUUID } from 'node:crypto';
+
 import { OrganizationalStructure } from './OrganizationalStructure';
 import { Position } from './Position';
 import { Company } from './Company';
-import { randomUUID } from 'node:crypto';
+import { Role } from './Role';
 
 type UserProps = {
   firstName: string;
@@ -11,8 +13,9 @@ type UserProps = {
   isActive: boolean;
   company: Company;
   position?: Position;
-  isCompanyResponsible: boolean;
+  isCompanyRepresentative: boolean;
   organizationalStructure?: OrganizationalStructure;
+  role: Role;
 };
 
 export class User {
@@ -22,21 +25,23 @@ export class User {
   password?: string;
   email: string;
   isActive: boolean;
-  isCompanyResponsible: boolean;
-  company: Company;
+  isCompanyRepresentative: boolean;
+  company?: Company;
   position?: Position;
   organizationalStructure?: OrganizationalStructure;
+  role?: Role;
 
   constructor(props: UserProps, id?: string) {
+    this.isCompanyRepresentative = props.isCompanyRepresentative;
+    this.organizationalStructure = props.organizationalStructure;
     this.firstName = props.firstName;
     this.lastName = props.lastName;
     this.password = props.password;
-    this.email = props.email;
     this.isActive = props.isActive;
-    this.isCompanyResponsible = props.isCompanyResponsible;
-    this.company = props.company;
     this.position = props.position;
-    this.organizationalStructure = props.organizationalStructure;
+    this.company = props.company;
+    this.email = props.email;
+    this.role = props.role;
 
     if (!id) {
       this.id = randomUUID();

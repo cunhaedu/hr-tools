@@ -3,11 +3,11 @@ import { ConfigModule } from '@nestjs/config';
 import { BullModule } from '@nestjs/bull';
 import { Module } from '@nestjs/common';
 
-import configuration from '@config/environment-config';
-
-import { CompanyModule } from './infra/modules/company/company.module';
-import { DatabaseModule } from './infra/database/database.module';
+import { CompanyModule } from '@infra/modules/company/company.module';
 import { SendMailConsumer } from '@infra/jobs/send-mail.consumer';
+import { DatabaseModule } from '@infra/database/database.module';
+import { UserModule } from '@infra/modules/user/user.module';
+import configuration from '@config/environment-config';
 
 @Module({
   imports: [
@@ -33,6 +33,7 @@ import { SendMailConsumer } from '@infra/jobs/send-mail.consumer';
     }),
     DatabaseModule,
     CompanyModule,
+    UserModule,
   ],
   controllers: [],
   providers: [SendMailConsumer],

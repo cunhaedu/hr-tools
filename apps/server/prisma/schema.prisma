@@ -20,7 +20,7 @@ model Company {
   state            String
   phoneNumber      String   @map("phone_number")
   isVerified       Boolean  @default(false) @map("is_verified")
-  verificationCode String   @map("verification_code")
+  verificationCode String?  @map("verification_code")
   createdAt        DateTime @default(now())
 
   users                    User[]
@@ -63,6 +63,7 @@ model User {
   email                     String  @unique
   password                  String?
   isActive                  Boolean @default(true) @map("is_active")
+  isCompanyRepresentative   Boolean @default(false) @map("is_company_representative")
   organizationalStructureId String? @map("organizational_structure_id")
   positionId                String? @map("position_id")
   companyId                 String  @map("company_id")
