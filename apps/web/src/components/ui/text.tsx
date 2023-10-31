@@ -26,7 +26,8 @@ const textVariants = cva(
         regular: "font-normal",
         medium: "font-medium",
         bold: "font-bold",
-      }
+      },
+
     },
     defaultVariants: {
       variant: "default",

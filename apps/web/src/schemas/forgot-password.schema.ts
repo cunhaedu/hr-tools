@@ -5,3 +5,5 @@ export const forgotPasswordSchema = z.object({
     .string({ required_error: 'O email é obrigatário' })
     .email(),
 });
+
+export type ForgotPasswordSchemaType = z.infer<typeof forgotPasswordSchema>;

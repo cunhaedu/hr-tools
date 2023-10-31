@@ -8,3 +8,5 @@ export const signInSchema = z.object({
     .string({ required_error: 'A senha é obrigatória' })
     .min(8, { message: 'A senha não pode ter menos de 8 caracteres' }),
 });
+
+export type signInSchemaType = z.infer<typeof signInSchema>;

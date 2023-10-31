@@ -10,9 +10,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
+import { RegisterCompanyForm } from '../register-company/register-company-form';
 import { ForgotPasswordForm } from '../forgot-password/forgot-password-form';
 import { SignInForm } from './sign-in-form';
-import { RegisterCompanyForm } from '../register-company/register-company-form';
 
 type availableForms = 'signIn' | 'forgotPassword' | 'registerCompany';
 

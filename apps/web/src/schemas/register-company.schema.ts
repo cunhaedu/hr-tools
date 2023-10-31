@@ -22,11 +22,7 @@ export const registerCompanySchema = z.object({
   cep: z
     .string({ required_error: 'O CEP é obrigatório' })
     .transform((val, ctx) => {
-      console.log(val);
-
       const value = val.replace(/[^\d]/g, '');
-      console.log(value);
-
 
       if(value.length !== 8) {
         ctx.addIssue({

@@ -1,9 +1,13 @@
-import { ThemeProvider } from '@/providers/theme-provider'
-import './styles/globals.css'
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import { TopBar } from '@/components/topBar'
-import { ReactQueryProvider } from '@/providers/react-query-provider'
+import { Inter } from 'next/font/google';
+import type { Metadata } from 'next';
+
+import { ReactQueryProvider } from '@/providers/react-query-provider';
+import { ThemeProvider } from '@/providers/theme-provider';
+import { AuthProvider } from '@/providers/auth-provider';
+import { Toaster } from '@/components/ui/toaster';
+
+import './styles/globals.css';
+import { PropsWithChildren } from 'react';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -12,25 +16,23 @@ export const metadata: Metadata = {
   description: 'O software mais moderno de 9box do mercado!',
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="pt-br">
       <body className={inter.className}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <ReactQueryProvider>
-            <TopBar />
-            {children}
-          </ReactQueryProvider>
-        </ThemeProvider>
+        <AuthProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <ReactQueryProvider>
+              {children}
+              <Toaster />
+            </ReactQueryProvider>
+          </ThemeProvider>
+        </AuthProvider>
       </body>
     </html>
   )

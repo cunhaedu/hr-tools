@@ -37,6 +37,7 @@ interface RegisterCompanyFormProps {
 }
 
 export function RegisterCompanyForm({ handleFormChange, setOpen }: RegisterCompanyFormProps) {
+  const [isFormSuccessfullySubmitted, setIsFormSuccessfullySubmitted] = useState(false);
   const [currentFormStep, setCurrentFormStep] = useState<number>(0);
 
   const form = useForm<registerCompanySchemaType>({
@@ -47,8 +48,13 @@ export function RegisterCompanyForm({ handleFormChange, setOpen }: RegisterCompa
   const isInLastStep = currentFormStep === FORM_STEP_LENGTH;
 
   async function onSubmit(values: registerCompanySchemaType) {
-    await axios('https://servicodados.ibge.gov.br/api/v1/localidades/estados/SP/distritos')
     console.log(values);
+    try {
+      await axios('https://servicodados.ibge.gov.br/api/v1/localidades/estados/SP/distritos')
+      setIsFormSuccessfullySubmitted(true);
+    } catch (error) {
+
+    }
   }
 
   async function handleActionButton() {
@@ -79,7 +85,7 @@ export function RegisterCompanyForm({ handleFormChange, setOpen }: RegisterCompa
     return forms[currentFormStep];
   }
 
-  if(form.formState.isSubmitSuccessful) {
+  if(isFormSuccessfullySubmitted) {
     return (
       <CompanyRegistered setOpen={setOpen} />
     )

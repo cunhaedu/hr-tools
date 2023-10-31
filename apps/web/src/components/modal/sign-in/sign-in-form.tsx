@@ -2,9 +2,10 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+import { signIn } from 'next-auth/react';
 
-import { signInSchema } from '@/schemas/sign-in.schema';
+import { signInSchema, signInSchemaType } from '@/schemas/sign-in.schema';
+import { Separator } from '@/components/ui/separator';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -21,20 +22,43 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Separator } from '@/components/ui/separator';
+import { useRouter } from 'next/navigation';
+import { useToast } from '@/components/ui/use-toast';
 
 interface SignInFormProps {
   handleFormChange(form: 'signIn' | 'forgotPassword' | 'registerCompany'): void;
 }
 
 export function SignInForm({ handleFormChange }: SignInFormProps) {
-  const form = useForm<z.infer<typeof signInSchema>>({
+  const router = useRouter();
+  const { toast } = useToast();
+
+  const form = useForm<signInSchemaType>({
     resolver: zodResolver(signInSchema),
-    defaultValues: {},
+    defaultValues: {
+      password: "",
+      email: "",
+    },
   });
 
-  function onSubmit(values: z.infer<typeof signInSchema>) {
-    console.log(values);
+  async function onSubmit(values: signInSchemaType) {
+    const res = await signIn<'credentials'>('credentials', {
+      email: values.email,
+      password: values.password,
+      redirect: false
+    });
+
+    if(!res?.ok) {
+      toast({
+        title: "Erro ao realizar o login",
+        description: "Verifique se seu usuário e senha estão corretos",
+        variant: "destructive",
+      });
+
+      return;
+    }
+
+    router.push('/dashboard');
   }
 
   return (
@@ -72,7 +96,7 @@ export function SignInForm({ handleFormChange }: SignInFormProps) {
               <FormItem>
                 <FormLabel>Senha</FormLabel>
                 <FormControl>
-                  <Input placeholder="Digite sua senha" {...field} />
+                  <Input type='password' placeholder="Digite sua senha" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -89,6 +113,7 @@ export function SignInForm({ handleFormChange }: SignInFormProps) {
               size="lg"
               variant="outline"
               className="w-full"
+              disabled={form.formState.isSubmitting}
               onClick={() => handleFormChange('forgotPassword')}
             >
               Esqueci a senha
