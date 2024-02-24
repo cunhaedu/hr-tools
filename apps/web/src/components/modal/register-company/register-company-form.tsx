@@ -10,11 +10,11 @@ import { Button } from "@/components/ui/button";
 import { Stepper } from '@/components/stepper';
 import { Form } from '@/components/ui/form';
 import {
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+  CustomModalDescription,
+  CustomModalFooter,
+  CustomModalHeader,
+  CustomModalTitle,
+} from "@/components/custom-modal";
 
 import { RegisterCompanyFormeStep1 } from './steps/register-company-form-step-1';
 import { RegisterCompanyFormeStep2 } from './steps/register-company-form-step-2';
@@ -36,7 +36,10 @@ interface RegisterCompanyFormProps {
   setOpen(open: boolean): void;
 }
 
-export function RegisterCompanyForm({ handleFormChange, setOpen }: RegisterCompanyFormProps) {
+export function RegisterCompanyForm({
+  handleFormChange,
+  setOpen
+}: Readonly<RegisterCompanyFormProps>) {
   const [isFormSuccessfullySubmitted, setIsFormSuccessfullySubmitted] = useState(false);
   const [currentFormStep, setCurrentFormStep] = useState<number>(0);
 
@@ -53,7 +56,6 @@ export function RegisterCompanyForm({ handleFormChange, setOpen }: RegisterCompa
       await axios('https://servicodados.ibge.gov.br/api/v1/localidades/estados/SP/distritos')
       setIsFormSuccessfullySubmitted(true);
     } catch (error) {
-
     }
   }
 
@@ -93,14 +95,14 @@ export function RegisterCompanyForm({ handleFormChange, setOpen }: RegisterCompa
 
   return (
     <>
-      <DialogHeader>
+      <CustomModalHeader>
         <Stepper stepTitles={FORM_STEP_TITLES} currentStep={currentFormStep} />
 
-        <DialogTitle>Abra uma conta para a sua empresa</DialogTitle>
-        <DialogDescription>
+        <CustomModalTitle>Abra uma conta para a sua empresa</CustomModalTitle>
+        <CustomModalDescription>
           Inicie hoje mesmo com nosso sistema!
-        </DialogDescription>
-      </DialogHeader>
+        </CustomModalDescription>
+      </CustomModalHeader>
 
       <Form {...form}>
         <form
@@ -156,7 +158,7 @@ export function RegisterCompanyForm({ handleFormChange, setOpen }: RegisterCompa
         </form>
       </Form>
 
-      <DialogFooter className='flex flex-col gap-4 justify-center'>
+      <CustomModalFooter className='flex flex-col gap-4 justify-center'>
         <Separator className="mb-2" />
 
         <span className='text-center'>
@@ -170,7 +172,7 @@ export function RegisterCompanyForm({ handleFormChange, setOpen }: RegisterCompa
         >
           Reenviar email
         </Button>
-      </DialogFooter>
+      </CustomModalFooter>
     </>
   )
 }

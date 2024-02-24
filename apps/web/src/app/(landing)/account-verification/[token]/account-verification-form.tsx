@@ -24,7 +24,7 @@ import {
 import { AccountVerificationFormSuccess } from './account-verification-form-success';
 
 interface AccountVerificationFormProps {
-  token: string;
+  readonly token: string;
 }
 
 export function AccountVerificationForm({ token }: AccountVerificationFormProps) {

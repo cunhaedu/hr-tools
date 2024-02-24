@@ -15,16 +15,18 @@ import {
   FormMessage
 } from '@/components/ui/form';
 import {
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+  CustomModalDescription,
+  CustomModalHeader,
+  CustomModalTitle,
+} from "@/components/custom-modal";
 
 interface ForgotPasswordFormProps {
   handleFormChange(form: 'signIn' | 'forgotPassword' | 'registerCompany'): void;
 }
 
-export function ForgotPasswordForm({ handleFormChange }: ForgotPasswordFormProps) {
+export function ForgotPasswordForm({
+  handleFormChange
+}: Readonly<ForgotPasswordFormProps>) {
   const form = useForm<ForgotPasswordSchemaType>({
     resolver: zodResolver(forgotPasswordSchema),
     defaultValues: {
@@ -38,12 +40,12 @@ export function ForgotPasswordForm({ handleFormChange }: ForgotPasswordFormProps
 
   return (
     <>
-      <DialogHeader>
-        <DialogTitle>Esqueceu sua senha?</DialogTitle>
-        <DialogDescription>
+      <CustomModalHeader>
+        <CustomModalTitle>Esqueceu sua senha?</CustomModalTitle>
+        <CustomModalDescription>
           Informe seu email para continuar.
-        </DialogDescription>
-      </DialogHeader>
+        </CustomModalDescription>
+      </CustomModalHeader>
 
       <Form {...form}>
         <form

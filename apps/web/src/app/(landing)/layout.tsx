@@ -1,8 +1,22 @@
+import { getServerSession } from 'next-auth';
+import { redirect } from 'next/navigation';
+import { ReactNode } from 'react';
+
+import { authOptions } from '../lib/next-auth/auth-options';
 import { Footer } from '@/components/footer';
 import { TopBar } from '@/components/topBar';
-import { PropsWithChildren } from 'react';
 
-export default async function LandingLayout({ children }: PropsWithChildren) {
+interface LandingLayoutProps {
+  readonly children: ReactNode;
+}
+
+export default async function LandingLayout({ children }: LandingLayoutProps) {
+  const session = await getServerSession(authOptions);
+
+  if(session) {
+    redirect('/dashboard');
+  }
+
   return (
     <div>
       <TopBar />

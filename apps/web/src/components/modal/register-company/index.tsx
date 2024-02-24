@@ -4,10 +4,10 @@ import { useState } from 'react';
 
 import { Button } from "@/components/ui/button";
 import {
-  Dialog,
-  DialogContent,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+  CustomModal,
+  CustomModalContent,
+  CustomModalTrigger,
+} from "@/components/custom-modal";
 
 import { ForgotPasswordForm } from '../forgot-password/forgot-password-form';
 import { RegisterCompanyForm } from './register-company-form';
@@ -40,8 +40,8 @@ export function RegisterCompany() {
   }
 
   return (
-    <Dialog open={open} onOpenChange={() => setCurrentForm('registerCompany')}>
-      <DialogTrigger asChild>
+    <CustomModal open={open} onOpenChange={() => setCurrentForm('registerCompany')}>
+      <CustomModalTrigger asChild>
         <Button
           variant="secondary"
           className="w-48"
@@ -49,10 +49,10 @@ export function RegisterCompany() {
         >
           Registrar empresa
         </Button>
-      </DialogTrigger>
-      <DialogContent open={open} handleToggleOpen={handleToggleOpen}>
+      </CustomModalTrigger>
+      <CustomModalContent handleToggleOpen={handleToggleOpen}>
         {renderForm()}
-      </DialogContent>
-    </Dialog>
+      </CustomModalContent>
+    </CustomModal>
   )
 }

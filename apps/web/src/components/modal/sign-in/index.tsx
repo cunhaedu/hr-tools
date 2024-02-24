@@ -5,10 +5,10 @@ import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import {
-  Dialog,
-  DialogContent,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+  CustomModal,
+  CustomModalContent,
+  CustomModalTrigger,
+} from "@/components/custom-modal";
 
 import { RegisterCompanyForm } from '../register-company/register-company-form';
 import { ForgotPasswordForm } from '../forgot-password/forgot-password-form';
@@ -41,8 +41,8 @@ export function SignIn() {
   }
 
   return (
-    <Dialog open={open} onOpenChange={() => setCurrentForm('signIn')}>
-      <DialogTrigger asChild>
+    <CustomModal open={open} onOpenChange={() => setCurrentForm('signIn')}>
+      <CustomModalTrigger asChild>
         <Button
           className="w-48 flex justify-center items-center gap-2"
           onClick={() => setOpen(true)}
@@ -50,11 +50,11 @@ export function SignIn() {
           Login
           <ArrowRight className="w-4 h-4" />
         </Button>
-      </DialogTrigger>
+      </CustomModalTrigger>
 
-      <DialogContent open={open} handleToggleOpen={handleToggleOpen}>
+      <CustomModalContent handleToggleOpen={handleToggleOpen}>
         {renderForm()}
-      </DialogContent>
-    </Dialog>
+      </CustomModalContent>
+    </CustomModal>
   )
 }

@@ -17,11 +17,11 @@ import {
   FormMessage
 } from '@/components/ui/form';
 import {
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+  CustomModalDescription,
+  CustomModalFooter,
+  CustomModalHeader,
+  CustomModalTitle,
+} from "@/components/custom-modal";
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/components/ui/use-toast';
 
@@ -29,7 +29,7 @@ interface SignInFormProps {
   handleFormChange(form: 'signIn' | 'forgotPassword' | 'registerCompany'): void;
 }
 
-export function SignInForm({ handleFormChange }: SignInFormProps) {
+export function SignInForm({ handleFormChange }: Readonly<SignInFormProps>) {
   const router = useRouter();
   const { toast } = useToast();
 
@@ -63,17 +63,17 @@ export function SignInForm({ handleFormChange }: SignInFormProps) {
 
   return (
     <>
-      <DialogHeader>
-        <DialogTitle>Bem vindo de volta!</DialogTitle>
-        <DialogDescription>
+      <CustomModalHeader>
+        <CustomModalTitle>Bem vindo de volta!</CustomModalTitle>
+        <CustomModalDescription>
           Para entrar no sistema informe seu email e senha.
-        </DialogDescription>
-      </DialogHeader>
+        </CustomModalDescription>
+      </CustomModalHeader>
 
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="grid gap-4 py-4"
+          className="flex flex-col justify-center gap-2 min-h-[calc(100vh-24rem)]"
         >
           <FormField
             control={form.control}
@@ -103,7 +103,7 @@ export function SignInForm({ handleFormChange }: SignInFormProps) {
             )}
           />
 
-          <div className="flex flex-col gap-4 mt-8">
+          <div className="flex flex-col gap-4">
             <Button type="submit" size="lg" className="w-full">
               Entrar
             </Button>
@@ -122,7 +122,7 @@ export function SignInForm({ handleFormChange }: SignInFormProps) {
         </form>
       </Form>
 
-      <DialogFooter className='flex flex-col gap-4 justify-center'>
+      <CustomModalFooter className='flex flex-col gap-4 justify-center mt-8'>
         <Separator className="mb-2" />
 
         <span className='text-center'>Ainda não tem um cadastro?</span>
@@ -134,7 +134,7 @@ export function SignInForm({ handleFormChange }: SignInFormProps) {
         >
           Iniciar abertura de conta
         </Button>
-      </DialogFooter>
+      </CustomModalFooter>
     </>
   )
 }

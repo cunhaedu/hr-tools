@@ -20,7 +20,7 @@ import {
 } from '@/components/ui/form';
 
 interface SelectCityProps {
-  uf?: string;
+  readonly uf?: string;
 }
 
 export function SelectCity({ uf }: SelectCityProps) {

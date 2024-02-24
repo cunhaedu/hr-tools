@@ -1,5 +1,10 @@
 import LottieAnimation from '@/components/Lottie';
-import { DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import {
+  CustomModalDescription,
+  CustomModalFooter,
+  CustomModalHeader,
+  CustomModalTitle
+} from '@/components/custom-modal';
 
 import emailVerification from '@/animation/email-verification.json'
 import { Button } from '@/components/ui/button';
@@ -8,25 +13,25 @@ interface CompanyRegisteredProps {
   setOpen(open: boolean): void;
 }
 
-export function CompanyRegistered({ setOpen }: CompanyRegisteredProps) {
+export function CompanyRegistered({ setOpen }: Readonly<CompanyRegisteredProps>) {
   return (
     <div>
-      <DialogHeader>
-        <DialogTitle>Cheque seu email!</DialogTitle>
-        <DialogDescription>
+      <CustomModalHeader>
+        <CustomModalTitle>Cheque seu email!</CustomModalTitle>
+        <CustomModalDescription>
           Um email de confirmação foi enviado para sua caixa de entrada.
-        </DialogDescription>
-      </DialogHeader>
+        </CustomModalDescription>
+      </CustomModalHeader>
 
       <div className='flex justify-center items-center h-[calc(100vh-250px)]'>
         <LottieAnimation lotti={emailVerification} height={320} width={320} />
       </div>
 
-      <DialogFooter>
+      <CustomModalFooter>
         <Button size="lg" className="w-full" onClick={() => setOpen(false)}>
           Entendi
         </Button>
-      </DialogFooter>
+      </CustomModalFooter>
     </div>
   );
 }
