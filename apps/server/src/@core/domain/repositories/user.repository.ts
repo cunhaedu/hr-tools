@@ -1,5 +1,5 @@
 import { User } from '../entities/User';
 
 export abstract class UserRepository {
-  abstract findByEmailWithPermissions(email: string): Promise<User | null>;
+  abstract findByEmail(email: string): Promise<User | null>;
 }

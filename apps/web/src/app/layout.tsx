@@ -9,7 +9,6 @@ import { Toaster } from '@/components/ui/toaster';
 
 import './styles/globals.css';
 
-
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
@@ -25,6 +24,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="pt-br">
       <body className={inter.className}>
+      <div className="absolute pointer-events-none inset-0 flex items-center justify-center dark:bg-black bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
         <AuthProvider>
           <ThemeProvider
             attribute="class"

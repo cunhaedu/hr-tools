@@ -3,10 +3,10 @@ import {
   CreateCompanyData,
   VerifyCompanyAndActivateUserData,
 } from '@core/domain/repositories/company.repository';
-import { RolesEnum } from '@core/domain/enums/roles.enum';
 import { Company } from '@core/domain/entities/Company';
 
 import { PrismaService } from '../prisma.service';
+import { Role } from '@core/domain/enums/role.enum';
 
 export class PrismaCompanyRepository implements CompanyRepository {
   constructor(private prisma: PrismaService) {}
@@ -67,11 +67,7 @@ export class PrismaCompanyRepository implements CompanyRepository {
             lastName: data.responsible.lastName,
             isActive: false,
             isCompanyRepresentative: true,
-            role: {
-              connect: {
-                id: RolesEnum.ADMIN,
-              },
-            },
+            role: Role.ADMIN,
           },
         },
       },

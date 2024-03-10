@@ -13,7 +13,6 @@ type Output = {
   id: string;
   name: string;
   token: string;
-  permissions: string[];
 };
 
 export class UserSignIn {
@@ -24,7 +23,7 @@ export class UserSignIn {
   ) {}
 
   async execute({ email, password }: Input): Promise<Output> {
-    const user = await this.userRepository.findByEmailWithPermissions(email);
+    const user = await this.userRepository.findByEmail(email);
 
     if (!user) {
       throw new InvalidCredentials();
@@ -59,7 +58,6 @@ export class UserSignIn {
       id: user.id,
       name: user.firstName,
       token,
-      permissions: user.role.permissions.map((permission) => permission.name),
     };
   }
 }

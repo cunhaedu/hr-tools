@@ -3,8 +3,14 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+enum Role {
+  COLLABORATOR
+  HR_ADMIN
+  ADMIN
 }
 
 model Company {
@@ -23,26 +29,10 @@ model Company {
   verificationCode String?  @map("verification_code")
   createdAt        DateTime @default(now())
 
-  users                    User[]
-  positions                Position[]
-  organizationalStructures OrganizationalStructure[]
+  users     User[]
+  positions Position[]
 
   @@map("company")
-}
-
-model OrganizationalStructure {
-  id        String  @id @default(uuid())
-  name      String
-  companyId String  @map("company_id")
-  parentId  String? @map("parent_id")
-
-  company Company                  @relation(fields: [companyId], references: [id])
-  parent  OrganizationalStructure? @relation("StructureTree", fields: [parentId], references: [id])
-
-  children OrganizationalStructure[] @relation("StructureTree")
-  users    User[]
-
-  @@map("organizational_sctructure")
 }
 
 model Position {
@@ -50,48 +40,75 @@ model Position {
   title     String
   companyId String @map("company_id")
 
-  company Company @relation(fields: [companyId], references: [id])
-  users   User[]
+  company                 Company                    @relation(fields: [companyId], references: [id])
+  users                   User[]
+  relatedEvaluationCycles EvaluationCyclePositions[]
 
   @@map("position")
 }
 
 model User {
-  id                        String  @id @default(uuid())
-  firstName                 String  @map("first_name")
-  lastName                  String  @map("last_name")
-  email                     String  @unique
-  password                  String?
-  isActive                  Boolean @default(true) @map("is_active")
-  isCompanyRepresentative   Boolean @default(false) @map("is_company_representative")
-  organizationalStructureId String? @map("organizational_structure_id")
-  positionId                String? @map("position_id")
-  companyId                 String  @map("company_id")
-  roleId                    String  @map("role_id")
+  id                      String  @id @default(uuid())
+  firstName               String  @map("first_name")
+  lastName                String  @map("last_name")
+  email                   String  @unique
+  password                String?
+  isActive                Boolean @default(true) @map("is_active")
+  isCompanyRepresentative Boolean @default(false) @map("is_company_representative")
+  positionId              String? @map("position_id")
+  companyId               String  @map("company_id")
 
-  role                    Role                     @relation(fields: [roleId], references: [id])
-  company                 Company                  @relation(fields: [companyId], references: [id])
-  position                Position?                @relation(fields: [positionId], references: [id])
-  organizationalStructure OrganizationalStructure? @relation(fields: [organizationalStructureId], references: [id])
+  role Role @default(COLLABORATOR)
+
+  company                Company      @relation(fields: [companyId], references: [id])
+  position               Position?    @relation(fields: [positionId], references: [id])
+  evaluationsAsEvaluated Evaluation[] @relation("evaluatedUser")
+  evaluationsAsEvaluator Evaluation[] @relation("evaluatorUser")
 
   @@map("user")
 }
 
-model Role {
-  id   String @id @default(uuid())
-  name String
+model Evaluationcycle {
+  id                   String   @id @default(uuid())
+  title                String
+  startDate            DateTime @map("start_date") @db.Date
+  endDate              DateTime @map("end_date") @db.Date
+  allowSelftEvaluation Boolean  @default(false) @map("allow_self_evaluation")
 
-  permissions Permission[] @relation("role_permission")
-  users       User[]
+  evaluations Evaluation[]
+  positions   EvaluationCyclePositions[]
 
-  @@map("rbac_role")
+  @@map("evaluation_cycle")
 }
 
-model Permission {
-  id   String @id @default(uuid())
-  name String
+model EvaluationCyclePositions {
+  cycleId    String @map("cycle_id")
+  positionId String @map("position_id")
 
-  roles Role[] @relation("role_permission")
+  cycle    Evaluationcycle @relation(fields: [cycleId], references: [id])
+  position Position        @relation(fields: [positionId], references: [id])
 
-  @@map("rbac_permission")
+  @@id([cycleId, positionId])
+  @@map("evaluation_cycle_positions")
+}
+
+model Evaluation {
+  id              String @id @default(uuid())
+  evaluatedUserId String @map("evaluated_user_id")
+  evaluatorUserId String @map("evaluator_user_id")
+  cycleId         String @map("cycle_id")
+  companyId       String @map("company_id")
+
+  managerEvaluationAt DateTime? @map("manager_evaluation_at")
+  selfEvaluationAt    DateTime? @map("self_evaluation_at")
+
+  managerEvaluationPotentialValue   Decimal? @map("manager_evaluation_potential_value")
+  managerEvaluationPerformanceValue Decimal? @map("manager_evaluation_performance_value")
+
+  selfEvaluationPotentialValue   Float? @map("self_evaluation_potential_value")
+  selfEvaluationPerformanceValue Float? @map("self_evaluation_performance_value")
+
+  cycle         Evaluationcycle @relation(fields: [cycleId], references: [id])
+  evaluatedUser User            @relation(name: "evaluatedUser", fields: [evaluatedUserId], references: [id])
+  evaluatorUser User            @relation(name: "evaluatorUser", fields: [evaluatorUserId], references: [id])
 }

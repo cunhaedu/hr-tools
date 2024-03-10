@@ -1,9 +1,8 @@
 import { randomUUID } from 'node:crypto';
 
-import { OrganizationalStructure } from './OrganizationalStructure';
 import { Position } from './Position';
 import { Company } from './Company';
-import { Role } from './Role';
+import { RoleEnum } from '../enums/role.enum';
 
 type UserProps = {
   firstName: string;
@@ -14,8 +13,7 @@ type UserProps = {
   company: Company;
   position?: Position;
   isCompanyRepresentative: boolean;
-  organizationalStructure?: OrganizationalStructure;
-  role: Role;
+  role: RoleEnum;
 };
 
 export class User {
@@ -28,12 +26,10 @@ export class User {
   isCompanyRepresentative: boolean;
   company?: Company;
   position?: Position;
-  organizationalStructure?: OrganizationalStructure;
-  role?: Role;
+  role: RoleEnum;
 
   constructor(props: UserProps, id?: string) {
     this.isCompanyRepresentative = props.isCompanyRepresentative;
-    this.organizationalStructure = props.organizationalStructure;
     this.firstName = props.firstName;
     this.lastName = props.lastName;
     this.password = props.password;
